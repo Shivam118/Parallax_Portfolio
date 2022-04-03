@@ -10,15 +10,21 @@ const Passport = () => {
     const [scrollPosition, setScrollPosition] = useState(0);
     const [passportSlide, setPassportSlide] = useState('0%');
     const [rotateFirstPage, setRotateFirstPage] = useState('rotateY(-' + scrollRotation + 'deg)');
+    const [landscapeViewPage, setLandscapeViewPage] = useState('');
 
+    // const RotatePassport = () => {
+    //     setLandscapeViewPage('rotate(90deg)')
+    // }
     const handleScroll = () => {
         const position = window.pageYOffset;
-        scrollRotation = (-1 * (position / 3));
+        scrollRotation = (-1 * (position / 2));
         if (scrollRotation <= -180) {
             setRotateFirstPage('rotateY(-180deg)')
+            setLandscapeViewPage('rotate(90deg)')
         }
-        else if (scrollRotation >= -180 && scrollRotation <= 0) {
+        else if (scrollRotation >= -180 && scrollRotation < 0) {
             setRotateFirstPage('rotateY(' + scrollRotation + 'deg)')
+            setLandscapeViewPage('rotate(0deg)')
         }
         else {
             setRotateFirstPage('rotate(0deg)')
@@ -46,8 +52,9 @@ const Passport = () => {
         alignItems: 'center',
         position: 'relative',
         left: passportSlide,
-        // transition: 'all 3s',
+        transition: 'all 1s',
         perspective: '2000px',
+        transform: landscapeViewPage,
     }
 
     const stylePassport = {
@@ -108,6 +115,7 @@ const Passport = () => {
         zIndex: '50',
         top: '0%',
         right: '0%',
+        transition: 'all 2s',
     }
     const styleDetailsPanel = {
         padding: '10px',
@@ -144,8 +152,8 @@ const Passport = () => {
     }
 
     const MouseEnterPassport = () => {
-        setPassportSlide(widthP / 2);
-        setRotateFirstPage('rotateY(-180deg)');
+        // setPassportSlide(widthP / 2);
+        // setRotateFirstPage('rotateY(-180deg)');
 
     }
     const MouseLeavePassport = () => {
