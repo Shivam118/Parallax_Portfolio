@@ -6,18 +6,23 @@ const Passport = () => {
     var heightP = 600
     var widthP = 425
     var scrollRotation
+    const position = window.pageYOffset;
 
-    const [scrollPosition, setScrollPosition] = useState(0);
+    const [scrollPosition, setScrollPosition] = useState(position);
     const [passportSlide, setPassportSlide] = useState('0%');
     const [rotateFirstPage, setRotateFirstPage] = useState('rotateY(-' + scrollRotation + 'deg)');
     const [landscapeViewPage, setLandscapeViewPage] = useState('');
-
+    const [nameTop, setNameTop] = useState(30);
+    const [nameOpacity,setNameOpacity]= useState(1);
     // const RotatePassport = () => {
     //     setLandscapeViewPage('rotate(90deg)')
     // }
+
+    scrollRotation = (-1 * ((scrollPosition / 2) + position));
     const handleScroll = () => {
-        const position = window.pageYOffset;
-        scrollRotation = (-1 * (position / 2));
+        setNameTop(30 - (-0.35*scrollRotation))
+        setNameOpacity(1 - ((-1*scrollRotation)/100));
+        console.log('Opacity' + nameOpacity)
         if (scrollRotation <= -180) {
             setRotateFirstPage('rotateY(-180deg)')
             setLandscapeViewPage('rotate(90deg)')
@@ -30,7 +35,7 @@ const Passport = () => {
             setRotateFirstPage('rotate(0deg)')
         }
         setScrollPosition(position);
-
+        console.log(nameTop)
         console.log('Rotation' + scrollRotation)
     };
 
@@ -39,9 +44,33 @@ const Passport = () => {
         return () => {
             window.removeEventListener("scroll", handleScroll);
         };
-    }, []);
+    });
 
-    console.log(scrollPosition)
+    const PassportCover = {
+        height: '150vh',
+        width: "100vw",
+        //   height: "1000px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: 'column',
+        position: 'relative',
+        background: 'linear-gradient(rgba(222,222,222,0) 70%, rgba(18, 20, 26, 0.95) 30%)',
+        // zIndex:'1000',
+    }
+
+    const NameHeroSec = {
+        position: 'absolute',
+        top: nameTop + 'vh',
+        fontSize: '6rem',
+        letterSpacing: '20px',
+        fontWeight: '800',
+        background: '-webkit-linear-gradient(left, #315cdc, #da4387)',
+        webkitBackgroundClip: 'text',
+        webkitTextFillColor: 'transparent',
+        zIndex:'-1',
+        opacity:nameOpacity,
+    }
 
     const passport = {
         height: heightP + 'px',
@@ -51,10 +80,14 @@ const Passport = () => {
         justifyContent: 'center',
         alignItems: 'center',
         position: 'relative',
+        top: '10%',
         left: passportSlide,
-        transition: 'all 1s',
+        transition: 'all 2s',
         perspective: '2000px',
         transform: landscapeViewPage,
+        boxShadow: '0px 0px 20px rgba(0,0,0,0.5)',
+        borderTopRightRadius: '1.5rem',
+        borderBottomRightRadius: '1.5rem',
     }
 
     const stylePassport = {
@@ -147,14 +180,19 @@ const Passport = () => {
         height: '100%',
     }
     const styleDetails2 = {
-        width: '98%',
+        width: '95%',
+
 
     }
 
     const MouseEnterPassport = () => {
-        // setPassportSlide(widthP / 2);
-        // setRotateFirstPage('rotateY(-180deg)');
-
+        if (scrollRotation >= -180) {
+            setPassportSlide(widthP / 2);
+        }
+        else {
+            setPassportSlide('0%');
+        }
+        setRotateFirstPage('rotateY(-180deg)');
     }
     const MouseLeavePassport = () => {
         setPassportSlide('0%');
@@ -162,112 +200,115 @@ const Passport = () => {
 
     }
     return (
-        <div className="passport" style={passport} onMouseEnter={MouseEnterPassport} onMouseLeave={MouseLeavePassport} >
-            <div style={stylePassport} >
-                <svg
-                    viewBox="0 0 200 200"
-                    xmlns='http://www.w3.org/2000/svg' style={SVGFilterOut}>
+        <div style={PassportCover}>
+            <div style={NameHeroSec}>SHIVAM SHARMA</div>
+            <div className="passport" style={passport} onMouseEnter={MouseEnterPassport} onMouseLeave={MouseLeavePassport} >
+                <div style={stylePassport} >
+                    <svg
+                        viewBox="0 0 200 200"
+                        xmlns='http://www.w3.org/2000/svg' style={SVGFilterOut}>
 
-                    <filter id='noiseFilter'>
-                        <feTurbulence
-                            type='turbulence'
-                            baseFrequency='1'
-                            numOctaves='10'
-                            stitchTiles='stitch' />
-                    </filter>
+                        <filter id='noiseFilter'>
+                            <feTurbulence
+                                type='turbulence'
+                                baseFrequency='1'
+                                numOctaves='10'
+                                stitchTiles='stitch' />
+                        </filter>
 
-                    <rect
-                        width='100%'
-                        height='100%'
-                        filter='url(#noiseFilter)' />
-                </svg>
-                <div style={passFrontPage}>
-                    <div style={{ textAlign: 'center', }}>
-                        <h3 style={stylePassportHeadings}>पासपोर्ट</h3>
-                        <h3 style={stylePassportHeadings}>passport</h3>
-                    </div>
-                    <br />
-                    <img src={Emblem} alt="Emblem" style={{ width: '70%' }} />
-                    <br />
-                    <div style={{ textAlign: 'center' }}>
-                        <h3 style={stylePassportHeadings}>भारत गणराज्य</h3>
-                        <h3 style={stylePassportHeadings}>republic of india</h3>
-                    </div>
-                </div>
-            </div>
-            <div style={stylepassportInside}>
-                <h4 style={{
-                    width: '100%',
-                    borderBottom: '1px solid black',
-                    textAlign: 'center',
-                    wordSpacing: '2px',
-                    letterSpacing: '2px',
-                    fontSize: '1.1rem'
-                }}>
-                    भारत गणराज्य &nbsp;&nbsp;&nbsp; REPUBLIC &nbsp;OF &nbsp;INDIA
-                </h4>
-                <div style={styleDetailsPanel}>
-                    <div style={styleImgSig}>
-                        <img src={Photo} alt="Profile" style={{ width: '90%' }} />
-                        <div style={Sign}>
-                            Shivam Sharma
+                        <rect
+                            width='100%'
+                            height='100%'
+                            filter='url(#noiseFilter)' />
+                    </svg>
+                    <div style={passFrontPage}>
+                        <div style={{ textAlign: 'center', }}>
+                            <h3 style={stylePassportHeadings}>पासपोर्ट</h3>
+                            <h3 style={stylePassportHeadings}>passport</h3>
+                        </div>
+                        <br />
+                        <img src={Emblem} alt="Emblem" style={{ width: '70%' }} />
+                        <br />
+                        <div style={{ textAlign: 'center' }}>
+                            <h3 style={stylePassportHeadings}>भारत गणराज्य</h3>
+                            <h3 style={stylePassportHeadings}>republic of india</h3>
                         </div>
                     </div>
-                    <div style={styleDetails}>
-                        <table>
-                            <tr>
-                                <td>टाइप/Type</td>
-                                <td>राष्ट्र कोड/Country Code</td>
-                                <td>पासपोर्ट न./Passport No.</td>
-                            </tr>
-                            <tr>
-                                <td>P</td>
-                                <td>IND</td>
-                                <td>ABCD1234</td>
-                            </tr>
-                            <tr>
-                                <td colspan="3">उपनाम/Surname</td>
-                            </tr>
-                            <tr>
-                                <td colspan="3">SHARMA</td>
-                            </tr>
-                            <tr>
-                                <td colspan="3">दिया गया नाम/Given Name(s)</td>
-                            </tr>
-                            <tr>
-                                <td colspan="3">SHIVAM</td>
-                            </tr>
-                            <tr>
-                                <td>राष्ट्रीयता/Nationality</td>
-                                <td>लिंग/Sex</td>
-                                <td>जन्मतिथि/Date of Birth</td>
-                            </tr>
-                            <tr>
-                                <td>INDIAN</td>
-                                <td>M</td>
-                                <td>16/10/2000</td>
-                            </tr>
-                            <tr>
-                                <td colspan="3">जन्मस्थान/Place of Birth</td>
-                            </tr>
-                            <tr>
-                                <td colspan="3">UTTAR PRADESH</td>
-                            </tr>
-                            <tr>
-                                <td colspan="3">जारी करने का स्थान/Place of Issue</td>
-                            </tr>
-                            <tr>
-                                <td colspan="3">GHAZIABAD</td>
-                            </tr>
-                        </table>
-                    </div>
                 </div>
-                <div style={styleDetails2}>
-                    <span style={{ fontSize: '12px', fontWeight: 'bold', letterSpacing: '1.5px', }}>
-                        P&lt;INDSHARMA&lt;&lt;SHIVAM&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;
-                        <br />
-                        ABCD1234&lt;4IND0016104M201610&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;8
-                    </span>
+                <div style={stylepassportInside}>
+                    <h4 style={{
+                        width: '100%',
+                        borderBottom: '1px solid black',
+                        textAlign: 'center',
+                        wordSpacing: '2px',
+                        letterSpacing: '2px',
+                        fontSize: '1.1rem'
+                    }}>
+                        भारत गणराज्य &nbsp;&nbsp;&nbsp; REPUBLIC &nbsp;OF &nbsp;INDIA
+                    </h4>
+                    <div style={styleDetailsPanel}>
+                        <div style={styleImgSig}>
+                            <img src={Photo} alt="Profile" style={{ width: '90%' }} />
+                            <div style={Sign}>
+                                Shivam Sharma
+                            </div>
+                        </div>
+                        <div style={styleDetails}>
+                            <table>
+                                <tr>
+                                    <td>टाइप/Type</td>
+                                    <td>राष्ट्र कोड/Country Code</td>
+                                    <td>पासपोर्ट न./Passport No.</td>
+                                </tr>
+                                <tr>
+                                    <td>P</td>
+                                    <td>IND</td>
+                                    <td>ABCD1234</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">उपनाम/Surname</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">SHARMA</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">दिया गया नाम/Given Name(s)</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">SHIVAM</td>
+                                </tr>
+                                <tr>
+                                    <td>राष्ट्रीयता/Nationality</td>
+                                    <td>लिंग/Sex</td>
+                                    <td>जन्मतिथि/Date of Birth</td>
+                                </tr>
+                                <tr>
+                                    <td>INDIAN</td>
+                                    <td>M</td>
+                                    <td>16/10/2000</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">जन्मस्थान/Place of Birth</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">UTTAR PRADESH</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">जारी करने का स्थान/Place of Issue</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">GHAZIABAD</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div style={styleDetails2}>
+                        <span style={{ fontSize: '0.725rem', fontWeight: 'bold', letterSpacing: '1.5px', }}>
+                            P&lt;INDSHARMA&lt;&lt;SHIVAM&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;
+                            <br />
+                            ABCD1234&lt;4IND0016104M201610&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;8
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>

@@ -15,9 +15,12 @@ function Navbar() {
         margin: '0px',
         padding: '0px',
         boxShadow:'0px 1px 10px rgba(0,0,0,0.1)',
+        position: 'absolute',
+        top:'0%',
+        zIndex:'1000',
     }
     const styleNavHeadLink = {
-        padding: '0 7.5%',
+        width:'200px',
         color: 'rgba(0,0,200,1)',
         textTransform: 'uppercase',
         fontSize: '1.75rem',

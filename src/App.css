@@ -6,11 +6,12 @@
   /* border: 1px solid red; */
 }
 .App{
-    width:90vw;
-    height:200vh;
-    display:flex;
+    /* width:90vw; */
+    /* height:200vh; */
+    /* display:flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
+    overflow: hidden;
 }
 
 table {
