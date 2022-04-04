@@ -9,7 +9,7 @@ const Passport = () => {
     const position = window.pageYOffset;
 
     const [scrollPosition, setScrollPosition] = useState(position);
-    const [passportSlide, setPassportSlide] = useState('0%');
+    const [passportSlide, setPassportSlide] = useState('50%');
     const [rotateFirstPage, setRotateFirstPage] = useState('rotateY(-' + scrollRotation + 'deg)');
     const [landscapeViewPage, setLandscapeViewPage] = useState('');
     const [nameTop, setNameTop] = useState(30);
@@ -22,10 +22,9 @@ const Passport = () => {
     const handleScroll = () => {
         setNameTop(30 - (-0.35*scrollRotation))
         setNameOpacity(1 - ((-1*scrollRotation)/100));
-        console.log('Opacity' + nameOpacity)
         if (scrollRotation <= -180) {
             setRotateFirstPage('rotateY(-180deg)')
-            setLandscapeViewPage('rotate(90deg)')
+            setLandscapeViewPage('rotate(90deg) translate(50%,50%)')
         }
         else if (scrollRotation >= -180 && scrollRotation < 0) {
             setRotateFirstPage('rotateY(' + scrollRotation + 'deg)')
@@ -33,6 +32,7 @@ const Passport = () => {
         }
         else {
             setRotateFirstPage('rotate(0deg)')
+            setNameOpacity(1);
         }
         setScrollPosition(position);
         console.log(nameTop)
@@ -60,6 +60,8 @@ const Passport = () => {
     }
 
     const NameHeroSec = {
+        width:'100%',
+        textAlign:'center',
         position: 'absolute',
         top: nameTop + 'vh',
         fontSize: '6rem',
@@ -79,12 +81,12 @@ const Passport = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        position: 'relative',
-        top: '10%',
+        position: 'absolute',
+        bottom: '10%',
         left: passportSlide,
         transition: 'all 2s',
         perspective: '2000px',
-        transform: landscapeViewPage,
+        transform: landscapeViewPage + ' translate(-50%,0%)',
         boxShadow: '0px 0px 20px rgba(0,0,0,0.5)',
         borderTopRightRadius: '1.5rem',
         borderBottomRightRadius: '1.5rem',
@@ -187,15 +189,15 @@ const Passport = () => {
 
     const MouseEnterPassport = () => {
         if (scrollRotation >= -180) {
-            setPassportSlide(widthP / 2);
+            // setPassportSlide('');
         }
         else {
-            setPassportSlide('0%');
+            setPassportSlide('50%');
         }
         setRotateFirstPage('rotateY(-180deg)');
     }
     const MouseLeavePassport = () => {
-        setPassportSlide('0%');
+        setPassportSlide('50%');
         setRotateFirstPage('rotateY(0deg)');
 
     }
